@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'personal-finnance-control';
+  // TODO: Get all messages from system
 }
