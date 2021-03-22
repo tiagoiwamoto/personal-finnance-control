@@ -1,0 +1,116 @@
+<app-header></app-header>
+
+<div class="p-p-3">
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <button pButton pRipple type="button" (click)="openFormNewInvest()" label="Novo" class="p-button-raised p-button-info"></button>
+    </div>
+    <div class="p-toolbar-group-right">
+      <p-chip label="Total de registros: {{entries.length}}" icon="pi pi-check"></p-chip>
+    </div>
+  </p-toolbar>
+</div>
+<div class="p-mt-2 p-d-flex p-p-3 card">
+
+  <p-table #dt2 [value]="entries" [rowHover]="true" [globalFilterFields]="['typeInvest','name','qty','value', 'type', 'taxB3', 'taxCorretagem']">
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex">
+                <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Buscar" />
+                </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th>Tipo</th>
+        <th>Nome</th>
+        <th>Quantidade</th>
+        <th>Valor</th>
+        <th>C/V</th>
+        <th>Taxa B3</th>
+        <th>Taxa Corretagem</th>
+        <th>Total investido</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-entry>
+      <tr>
+        <td>
+          <button pButton pRipple type="button" icon="pi pi-info" class="p-button-rounded p-button-info p-button-outlined p-ml-1 p-mr-1" pTooltip="Detalhes do registro"></button>
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-outlined p-ml-1 p-mr-1" pTooltip="Editar registro"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined p-ml-1 p-mr-1" pTooltip="Remover registro"></button>
+        </td>
+        <td>{{entry.typeInvest}}</td>
+        <td>{{entry.name}}</td>
+        <td>{{entry.qty}}</td>
+        <td>{{entry.value | currency: 'R$'}}</td>
+        <td><p-badge [value]="getType(entry.type)" severity="info" styleClass="p-mr-2"></p-badge></td>
+        <td>{{entry.taxB3 | currency: 'R$'}}</td>
+        <td>{{entry.taxCorretagem | currency: 'R$'}}</td>
+        <td>{{(entry.value * entry.qty) - entry.taxB3 - entry.taxCorretagem | currency: 'R$'}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
+
+<p-dialog header="Novo lançamento" [(visible)]="novaEntrada" [modal]="true" [maximizable]="true" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+
+  <div class="p-text-center">
+    <h5>Tipo de lançamento</h5>
+    <p-selectButton [options]="typeEntry" [(ngModel)]="entry.type" optionLabel="label" optionValue="value"></p-selectButton>
+  </div>
+
+  <div class="p-text-center">
+    <h5>Tipo de investimento</h5>
+    <p-selectButton [options]="typeInvest" [(ngModel)]="entry.typeInvest" optionLabel="label" optionValue="value"></p-selectButton>
+  </div>
+
+  <mat-form-field class="form-field">
+    <mat-label>Nome</mat-label>
+    <input autocomplete="off" matInput type="text" [(ngModel)]="entry.name" />
+    <button mat-button *ngIf="entry.name" matSuffix mat-icon-button aria-label="Clear" (click)="entry.name=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <br />
+  <mat-form-field class="form-field">
+    <mat-label>Quantidade</mat-label>
+    <input autocomplete="off" (keypress)="validQtyOnlyNumber($event)" matInput type="text" [(ngModel)]="entry.qty" />
+    <button mat-button *ngIf="entry.qty" matSuffix mat-icon-button aria-label="Clear" (click)="entry.qty=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <br />
+  <mat-form-field class="form-field">
+    <mat-label>Valor</mat-label>
+    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="entry.value" />
+    <button mat-button *ngIf="entry.value" matSuffix mat-icon-button aria-label="Clear" (click)="entry.value=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <br />
+  <mat-form-field class="form-field">
+    <mat-label>Taxa B3</mat-label>
+    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="entry.taxB3" />
+    <button mat-button *ngIf="entry.taxB3" matSuffix mat-icon-button aria-label="Clear" (click)="entry.taxB3=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <br />
+  <mat-form-field class="form-field">
+    <mat-label>Corretagem</mat-label>
+    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="entry.taxCorretagem" />
+    <button mat-button *ngIf="entry.taxCorretagem" matSuffix mat-icon-button aria-label="Clear" (click)="entry.taxCorretagem=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="saveEntry()" label="Adicionar" styleClass="p-button-success p-button-text"></p-button>
+    <p-button icon="pi pi-check" (click)="novaEntrada = false" label="Cancelar" styleClass="p-button-warning p-button-text"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>

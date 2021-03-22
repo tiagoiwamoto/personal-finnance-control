@@ -1,0 +1,40 @@
+<app-header></app-header>
+
+<div class="p-mt-4 p-ml-4 p-mr-4 p-d-flex"><h3>Últimas movimentações</h3></div>
+
+<div class="p-d-flex p-jc-center p-flex-column p-flex-md-row p-flex-lg-row p-flex-sm-row p-p-3 card">
+  <div class="p-sm-12 p-md-4 p-lg-3" *ngFor="let entry of entries">
+    <p-card class="p-ml-2 p-mr-2" header="{{ entry.name }}">
+      <div class="p-d-flex p-flex-column p-flex-md-row p-flex-lg-row p-flex-sm-row p-jc-center">
+        <div class="p-d-flex p-shadow-2 card-border-radius">
+          <div class="p-mr-2 p-ml-2 p-mr-2 p-mt-2 p-mb-2">Valor: {{entry.value | currency: 'R$'}}</div>
+          <div class="p-mr-2 p-ml-2 p-mr-2 p-mt-2 p-mb-2">Quantidade: {{entry.qty}}</div>
+          <div class="p-mr-2 p-ml-2 p-mr-2 p-mt-2 p-mb-2">Tipo: {{entry.type}}</div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
+
+<p-carousel class="p-ml-4 p-mr-4"
+            [value]="analisys" styleClass="custom-carousel"
+            [numVisible]="3" [numScroll]="1" [circular]="true"
+            [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
+  <ng-template pTemplate="header">
+    <h5 class="p-ml-4 p-mr-4">Últimas analises</h5>
+  </ng-template>
+  <ng-template let-analisy pTemplate="item">
+    <div class="product-item">
+      <div class="analisy-item-content">
+        <div class="p-ml-2 p-mr-2">
+          <b>{{analisy.title}}</b>
+          <p-divider align="right">{{analisy.datetime | date: 'dd/MM/yyyy HH:mm:ss'}}</p-divider>
+          <span>{{analisy.text}}</span>
+        </div>
+        <div class="p-mt-2 p-ml-2 p-mr-2 p-text-right">
+          <span>Analise feita por <b>{{analisy.author}}</b></span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>

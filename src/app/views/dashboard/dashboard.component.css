@@ -1,0 +1,15 @@
+.card-border-radius{
+  border-radius: 5px;
+}
+
+.scroll-analisys{
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.analisy-item-content {
+  border-right: 1px solid var(--surface-d);
+  border-radius: 3px;
+  margin: .3rem;
+  padding: 2rem 0;
+}

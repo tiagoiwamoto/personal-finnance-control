@@ -20,6 +20,16 @@ import {MessageService} from 'primeng/api';
 import { InvestmentComponent } from './views/investment/investment.component';
 import {DividerModule} from 'primeng/divider';
 import {CarouselModule} from 'primeng/carousel';
+import {ToolbarModule} from 'primeng/toolbar';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {ChipModule} from 'primeng/chip';
+import {DialogModule} from 'primeng/dialog';
+import {SelectButtonModule} from 'primeng/selectbutton';
+import {FormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {TooltipModule} from 'primeng/tooltip';
+import {BadgeModule} from 'primeng/badge';
+import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -36,6 +46,7 @@ import {CarouselModule} from 'primeng/carousel';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
+    MatInputModule,
     ButtonModule,
     RippleModule,
     CardModule,
@@ -44,6 +55,15 @@ import {CarouselModule} from 'primeng/carousel';
     ToastModule,
     DividerModule,
     CarouselModule,
+    ToolbarModule,
+    SplitButtonModule,
+    ChipModule,
+    DialogModule,
+    SelectButtonModule,
+    TooltipModule,
+    BadgeModule,
+    FormsModule,
+    InputTextModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]
