@@ -30,6 +30,7 @@ import {MatInputModule} from '@angular/material/input';
 import {TooltipModule} from 'primeng/tooltip';
 import {BadgeModule} from 'primeng/badge';
 import {InputTextModule} from 'primeng/inputtext';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import {InputTextModule} from 'primeng/inputtext';
     SelectButtonModule,
     TooltipModule,
     BadgeModule,
+    OverlayPanelModule,
     FormsModule,
     InputTextModule
   ],
