@@ -10,20 +10,17 @@
     </div>
   </p-toolbar>
 </div>
-<div class="p-mt-2 p-d-flex p-p-3 card">
+<div class="p-d-flex p-p-3 card">
 
   <p-table #dt2 [value]="entries" [rowHover]="true" [globalFilterFields]="['typeInvest','name','qty','value', 'type', 'taxB3', 'taxCorretagem']">
-    <ng-template pTemplate="caption">
-      <div class="p-d-flex">
-                <span class="p-input-icon-left p-ml-auto">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Buscar" />
-                </span>
-      </div>
-    </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th></th>
+        <th>
+          <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" [ngStyle]="{width: '100%'}" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Buscar" />
+                </span>
+        </th>
         <th>Tipo</th>
         <th>Nome</th>
         <th>Quantidade</th>
