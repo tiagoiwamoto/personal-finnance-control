@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-investment',
@@ -19,7 +20,7 @@ export class InvestmentComponent implements OnInit {
     {id: 4, name: 'XPML11', qty: 24, value: 88.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0.02},
   ];
 
-  constructor() {
+  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
     this.entry = {};
   }
 
@@ -36,6 +37,27 @@ export class InvestmentComponent implements OnInit {
     console.log(this.entry);
     this.entries.push(this.entry);
     this.novaEntrada = false;
+  }
+
+  removeEntry(): void {
+    this.confirmationService.confirm({
+      message: 'Confirma a exclusão?',
+      header: 'Confirmar remoção',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.messageService.add({severity: 'info', summary: 'Confirmado', detail: 'Registro removido'});
+      },
+      reject: (type) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({severity: 'warn', summary: 'Cancelada', detail: 'Ação cancelada'});
+            break;
+        }
+      }
+    });
   }
 
   validQtyOnlyNumber(event): boolean{

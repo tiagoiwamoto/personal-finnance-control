@@ -36,7 +36,7 @@
         <td>
           <button pButton pRipple type="button" icon="pi pi-info" class="p-button-rounded p-button-info p-button-outlined p-ml-1 p-mr-1" pTooltip="Detalhes do registro"></button>
           <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-outlined p-ml-1 p-mr-1" pTooltip="Editar registro"></button>
-          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined p-ml-1 p-mr-1" pTooltip="Remover registro"></button>
+          <button (click)="removeEntry()" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined p-ml-1 p-mr-1" pTooltip="Remover registro"></button>
         </td>
         <td>{{entry.typeInvest}}</td>
         <td>{{entry.name}}</td>
@@ -110,4 +110,5 @@
   </ng-template>
 </p-dialog>
 
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 <p-toast></p-toast>

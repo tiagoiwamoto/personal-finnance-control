@@ -16,7 +16,7 @@ import {CardModule} from 'primeng/card';
 import {DataViewModule} from 'primeng/dataview';
 import {TableModule} from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { InvestmentComponent } from './views/investment/investment.component';
 import {DividerModule} from 'primeng/divider';
 import {CarouselModule} from 'primeng/carousel';
@@ -31,6 +31,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import {BadgeModule} from 'primeng/badge';
 import {InputTextModule} from 'primeng/inputtext';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -64,10 +65,11 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     TooltipModule,
     BadgeModule,
     OverlayPanelModule,
+    ConfirmDialogModule,
     FormsModule,
     InputTextModule
   ],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
