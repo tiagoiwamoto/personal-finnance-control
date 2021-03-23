@@ -9,8 +9,24 @@ import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api
 export class InvestmentComponent implements OnInit {
 
   novaEntrada = false;
+  recordDetails = false;
   typeEntry = [{label: 'Compra', value: 'C'}, {label: 'Venda', value: 'V'}];
   typeInvest = [{label: 'Fii', value: 'FII'}, {label: 'Ação', value: 'ACAO'}];
+  dividendos = [
+    {
+      year: 2020, payments: [
+        {month: 1, value: 0.52}, {month: 2, value: 0.42}, {month: 3, value: 0.62},
+        {month: 4, value: 0.38}, {month: 5, value: 0.38}, {month: 6, value: 0.62},
+        {month: 7, value: 0.22}, {month: 8, value: 0.66}, {month: 9, value: 0.55},
+        {month: 10, value: 0.78}, {month: 11, value: 0.47}, {month: 12, value: 0.44}
+      ]
+    },
+    {
+      year: 2021, payments: [
+        {month: 1, value: 0.42}, {month: 2, value: 0.62}, {month: 3, value: 0.22}
+      ]
+    }
+  ];
   entry;
 
   entries = [
@@ -32,6 +48,11 @@ export class InvestmentComponent implements OnInit {
     this.entry = {};
   }
 
+  openRecordDetails(selectedRecord: any): void {
+    this.recordDetails = true;
+    this.entry = selectedRecord;
+  }
+
   saveEntry(): void {
     this.entry.id = Math.floor(Math.random() * 9999) + 1 ;
     console.log(this.entry);
@@ -44,11 +65,13 @@ export class InvestmentComponent implements OnInit {
       message: 'Confirma a exclusão?',
       header: 'Confirmar remoção',
       icon: 'pi pi-info-circle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
       accept: () => {
         this.messageService.add({severity: 'info', summary: 'Confirmado', detail: 'Registro removido'});
       },
       reject: (type) => {
-        switch(type) {
+        switch (type) {
           case ConfirmEventType.REJECT:
             this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
             break;
@@ -77,10 +100,39 @@ export class InvestmentComponent implements OnInit {
   }
 
   getType(type: string): string{
-    if(type === 'C'){
+    if (type === 'C'){
       return 'Compra';
     }else{
       return 'Venda';
+    }
+  }
+
+  convertMonthNumberToText(month: number): string{
+    switch (month){
+      case 1:
+        return 'Janeiro';
+      case 2:
+        return 'Fevereiro';
+      case 3:
+        return 'Março';
+      case 4:
+        return 'Abril';
+      case 5:
+        return 'Maio';
+      case 6:
+        return 'Junho';
+      case 7:
+        return 'Julho';
+      case 8:
+        return 'Agosto';
+      case 9:
+        return 'Setembro';
+      case 10:
+        return 'Outubro';
+      case 11:
+        return 'Novembro';
+      case 12:
+        return 'Dezembro';
     }
   }
 

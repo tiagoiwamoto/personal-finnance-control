@@ -34,7 +34,7 @@
     <ng-template pTemplate="body" let-entry>
       <tr>
         <td>
-          <button pButton pRipple type="button" icon="pi pi-info" class="p-button-rounded p-button-info p-button-outlined p-ml-1 p-mr-1" pTooltip="Detalhes do registro"></button>
+          <button (click)="openRecordDetails(entry)" pButton pRipple type="button" icon="pi pi-info" class="p-button-rounded p-button-info p-button-outlined p-ml-1 p-mr-1" pTooltip="Detalhes do registro"></button>
           <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success p-button-outlined p-ml-1 p-mr-1" pTooltip="Editar registro"></button>
           <button (click)="removeEntry()" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined p-ml-1 p-mr-1" pTooltip="Remover registro"></button>
         </td>
@@ -107,6 +107,47 @@
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-check" (click)="saveEntry()" label="Adicionar" styleClass="p-button-success p-button-text"></p-button>
     <p-button icon="pi pi-check" (click)="novaEntrada = false" label="Cancelar" styleClass="p-button-warning p-button-text"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog header="Detalhes do lançamento" [(visible)]="recordDetails" [modal]="true" [maximizable]="false" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+
+  <div class="p-d-flex">
+    <div class="p-ml-2 p-mr-2">
+      <p-card>
+        <ng-template pTemplate="header">
+          <span class="p-ml-2 p-mr-2 p-mt-2">Detalhes sobre {{ entry.name }}</span>
+        </ng-template>
+        Valor pago: <p-badge [value]="entry.value | currency: 'R$'" styleClass="p-mr-2"></p-badge>
+        <div class="p-mt-2"></div>
+        Quantidade <p-badge [value]="entry.qty" styleClass="p-mr-2"></p-badge>
+        <div class="p-mt-2"></div>
+        Total investido: <p-badge [value]="entry.value * entry.qty | currency: 'R$'" styleClass="p-mr-2"></p-badge>
+        <div class="p-mt-2"></div>
+        <ng-template pTemplate="footer">
+          Footer content here
+        </ng-template>
+      </p-card>
+    </div>
+    <div class="p-ml-2 p-mr-2">
+      <h5>Dividendos</h5>
+      <p-tabView>
+        <p-tabPanel [header]="year.year" *ngFor="let year of dividendos">
+          <div class="card-dividendos-payment p-shadow-1 p-mt-2 p-mb-2 p-text-right" *ngFor="let month of year.payments">
+            <div class="p-pt-2 p-pl-2 p-pr-2">
+              {{ convertMonthNumberToText(month.month) }}:
+              {{ month.value * entry.qty | currency: 'R$' }}
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="saveEntry()" label="Editar" styleClass="p-button-info p-button-text"></p-button>
+    <p-button icon="pi pi-check" (click)="recordDetails = false" label="Fechar" styleClass="p-button-secondary p-button-text"></p-button>
   </ng-template>
 </p-dialog>
 

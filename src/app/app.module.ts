@@ -32,6 +32,9 @@ import {BadgeModule} from 'primeng/badge';
 import {InputTextModule} from 'primeng/inputtext';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {TabViewModule} from 'primeng/tabview';
+import {MessageModule} from 'primeng/message';
+import {MessagesModule} from 'primeng/messages';
 
 @NgModule({
   declarations: [
@@ -64,8 +67,11 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     SelectButtonModule,
     TooltipModule,
     BadgeModule,
+    MessagesModule,
+    MessageModule,
     OverlayPanelModule,
     ConfirmDialogModule,
+    TabViewModule,
     FormsModule,
     InputTextModule
   ],
