@@ -35,6 +35,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {TabViewModule} from 'primeng/tabview';
 import {MessageModule} from 'primeng/message';
 import {MessagesModule} from 'primeng/messages';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {MessagesModule} from 'primeng/messages';
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatChipsModule,
     ButtonModule,
     RippleModule,
     CardModule,

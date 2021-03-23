@@ -36,6 +36,18 @@ export class InvestmentComponent implements OnInit {
     {id: 4, name: 'XPML11', qty: 24, value: 88.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0.02},
   ];
 
+  calcTotalDividendos(year: number, qty: number): number{
+    let total = 0;
+    this.dividendos.forEach(div => {
+      if (div.year === year){
+        div.payments.forEach(pay => {
+          total = total + (pay.value * qty);
+        });
+      }
+    });
+    return total;
+  }
+
   constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
     this.entry = {};
   }
