@@ -78,6 +78,7 @@ export class InvestmentComponent implements OnInit {
   saveEntry(): void {
     this.entry.id = Math.floor(Math.random() * 9999) + 1 ;
     console.log(this.entry);
+    this.entry.dateEvent = '2021-03-24';
     this.entries.push(this.entry);
     this.formEntryRecord = false;
   }
