@@ -1,9 +1,9 @@
 <app-header></app-header>
 
-<div class="p-p-3">
+<div class="p-p-3 animate__animated animate__bounceInLeft">
   <p-toolbar>
     <div class="p-toolbar-group-left">
-      <button pButton pRipple type="button" (click)="openFormNewInvest()" label="Novo"
+      <button pButton pRipple type="button" (click)="openFormNewInvest()" label="Novo registro"
               class="p-button-raised p-button-info"></button>
     </div>
     <div class="p-toolbar-group-right">
@@ -11,7 +11,7 @@
     </div>
   </p-toolbar>
 </div>
-<div class="p-d-flex p-p-3 card">
+<div class="p-d-flex p-p-3 card animate__animated animate__bounceInUp">
 
   <p-table #dt2 [value]="entries" [rowHover]="true"
            [globalFilterFields]="['typeInvest','name','qty','value', 'type', 'taxB3', 'taxCorretagem']">
@@ -52,7 +52,7 @@
         <td>{{entry.qty}}</td>
         <td>{{entry.value | currency: 'R$'}}</td>
         <td>
-          <p-badge [value]="getType(entry.type)" severity="info" styleClass="p-mr-2"></p-badge>
+          <p-badge [value]="getType(entry.type)" [severity]="getSeverity(entry.type)" styleClass="p-mr-2"></p-badge>
         </td>
         <td>{{entry.taxB3 | currency: 'R$'}}</td>
         <td>{{entry.taxCorretagem | currency: 'R$'}}</td>
@@ -66,22 +66,29 @@
 <p-dialog header="Novo lançamento" [(visible)]="formEntryRecord" [modal]="true" [maximizable]="false" [baseZIndex]="10000"
           [draggable]="false" [resizable]="false">
 
-  <div class="p-text-center">
-    <h5>Tipo de lançamento</h5>
-    <p-selectButton [options]="typeEntry" [(ngModel)]="entry.type" optionLabel="label"
-                    optionValue="value"></p-selectButton>
+  <div class="p-d-flex p-text-center">
+    <div class="p-col-6"><h5>Tipo de lançamento</h5>
+      <p-selectButton [options]="typeEntry" [(ngModel)]="entry.type" optionLabel="label"
+                      optionValue="value"></p-selectButton></div>
+    <div class="p-col-6"><h5>Tipo de investimento</h5>
+      <p-selectButton [options]="typeInvest" [(ngModel)]="entry.typeInvest" optionLabel="label"
+                      optionValue="value"></p-selectButton></div>
+
   </div>
 
-  <div class="p-text-center">
-    <h5>Tipo de investimento</h5>
-    <p-selectButton [options]="typeInvest" [(ngModel)]="entry.typeInvest" optionLabel="label"
-                    optionValue="value"></p-selectButton>
-  </div>
 
   <mat-form-field class="form-field">
     <mat-label>Nome</mat-label>
     <input autocomplete="off" matInput type="text" [(ngModel)]="entry.name"/>
     <button mat-button *ngIf="entry.name" matSuffix mat-icon-button aria-label="Clear" (click)="entry.name=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <br/>
+  <mat-form-field class="form-field">
+    <mat-label>Data</mat-label>
+    <input [textMask]="{mask: datemask}" autocomplete="off" matInput type="text" [(ngModel)]="entry.dateEvent"/>
+    <button mat-button *ngIf="entry.dateEvent" matSuffix mat-icon-button aria-label="Clear" (click)="entry.dateEvent=''">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
@@ -176,25 +183,40 @@
       </p-tabView>
     </p-tabPanel>
     <p-tabPanel header="Ganhos">
-      <p-card>
-        <ng-template pTemplate="header">
-          <span class="p-ml-2 p-mr-2 p-mt-2">Movimentação</span>
-        </ng-template>
-        <div *ngIf="entry.typeInvest === 'FII'">
-          Total investido: {{ fiiTotal.totalInvestment }}
-          <p-divider></p-divider>
-          <div *ngIf="payDarf !== undefined">
-            Data da venda: {{ payDarf.dateSell }}
-            Valor da venda: {{ payDarf.valueSell }}
-            Valor ganho: {{ payDarf.valueWow }}
-            Valor aproximado da DARF: {{ payDarf.valueOfDarf }}
-          </div>
+      <div *ngIf="entry.typeInvest === 'FII'">
+        <p-messages severity="success">
+          <ng-template pTemplate>
+            Total investido: <div class="p-ml-2">{{ fiiTotal.totalInvestment | currency: 'R$' }}</div>
+          </ng-template>
+        </p-messages>
+        <p-divider></p-divider>
+        <div *ngIf="payDarf.dateSell !== undefined">
+
+          <p-messages severity="info">
+            <ng-template pTemplate>
+              Data da venda: <div class="p-ml-2">{{ payDarf.dateSell | date: 'dd/MM/yyyy' }}</div>
+            </ng-template>
+          </p-messages>
+
+          <p-messages severity="info">
+            <ng-template pTemplate>
+              Valor da venda: <div class="p-ml-2">{{ payDarf.valueSell | currency: 'R$' }}</div>
+            </ng-template>
+          </p-messages>
+
+          <p-messages severity="success">
+            <ng-template pTemplate>
+              Valor ganho: <div class="p-ml-2">{{ payDarf.valueWow | currency: 'R$' }}</div>
+            </ng-template>
+          </p-messages>
+
+          <p-messages severity="warn">
+            <ng-template pTemplate>
+              Valor aproximado da DARF: <div class="p-ml-2">{{ payDarf.valueOfDarf | currency: 'R$' }}</div>
+            </ng-template>
+          </p-messages>
         </div>
-        <div class="p-mt-2"></div>
-        <ng-template pTemplate="footer">
-          Footer content here
-        </ng-template>
-      </p-card>
+      </div>
     </p-tabPanel>
   </p-tabView>
 

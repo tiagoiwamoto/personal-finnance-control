@@ -1,8 +1,8 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="animate__animated animate__bounceInDown">
   <button (click)="menu.toggle($event)" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Iwt-Finnance control</span>
+  <span class="header-title">Millionaire</span>
   <span class="toolbar-spacer"></span>
   <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
@@ -14,8 +14,11 @@
 
 <p-overlayPanel #menu>
   <ng-template pTemplate>
-    <button pButton pRipple type="button" label="Dashboard" routerLink="/" class="p-mt-2 p-mb-2 p-button-raised"></button>
-    <br />
-    <button pButton pRipple type="button" label="Meus Investimentos" routerLink="/my-investment" class="p-mt-2 p-mb-2 p-button-raised"></button>
+    <div class="p-mt-2 p-ml-2 p-mr-2">
+      <button pButton pRipple type="button" label="Dashboard" routerLink="/" class="button-menu-size p-button-raised"></button>
+    </div>
+    <div class="p-mt-2 p-ml-2 p-mr-2">
+      <button pButton pRipple type="button" label="Meus Investimentos" routerLink="/my-investment" class="button-menu-size p-button-raised"></button>
+    </div>
   </ng-template>
 </p-overlayPanel>

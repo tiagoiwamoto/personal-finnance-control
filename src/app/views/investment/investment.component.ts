@@ -14,6 +14,7 @@ export class InvestmentComponent implements OnInit {
   typeInvest = [{label: 'Fii', value: 'FII'}, {label: 'Ação', value: 'ACAO'}];
   payDarf;
   fiiTotal;
+  datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
   dividendos = [
     {
       year: 2020, payments: [
@@ -36,6 +37,7 @@ export class InvestmentComponent implements OnInit {
     {id: 2, name: 'BCFF11', qty: 20, value: 91.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0, dateEvent: '2018-02-01'},
     {id: 3, name: 'MXRF11', qty: 100, value: 10.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0, dateEvent: '2018-03-01'},
     {id: 4, name: 'XPML11', qty: 24, value: 88.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0.02, dateEvent: '2018-04-01'},
+    {id: 5, name: 'ALZR11', qty: 71, value: 131.15, type: 'V', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0, dateEvent: '2021-03-24'},
   ];
 
   calcTotalDividendos(year: number, qty: number): number{
@@ -164,6 +166,14 @@ export class InvestmentComponent implements OnInit {
       return 'Compra';
     }else{
       return 'Venda';
+    }
+  }
+
+  getSeverity(type: string): string{
+    if (type === 'C'){
+      return 'info';
+    }else{
+      return 'danger';
     }
   }
 

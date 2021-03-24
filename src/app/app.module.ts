@@ -36,6 +36,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {MessageModule} from 'primeng/message';
 import {MessagesModule} from 'primeng/messages';
 import {MatChipsModule} from '@angular/material/chips';
+import {TextMaskModule} from 'angular2-text-mask';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import {MatChipsModule} from '@angular/material/chips';
     ConfirmDialogModule,
     TabViewModule,
     FormsModule,
-    InputTextModule
+    InputTextModule,
+    TextMaskModule
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]
