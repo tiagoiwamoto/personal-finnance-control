@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {environment} from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,7 @@ export class HeaderComponent implements OnInit {
 
   showAbout = false;
   selectedGif;
+  version = environment.version;
 
   constructor() {
     this.randomHelloGif();
