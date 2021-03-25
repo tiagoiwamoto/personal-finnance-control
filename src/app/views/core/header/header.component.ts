@@ -7,9 +7,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  showAbout = false;
+  selectedGif;
+
+  constructor() {
+    this.randomHelloGif();
+  }
 
   ngOnInit(): void {
+  }
+
+  showModalAbout(): void {
+    this.showAbout = true;
+  }
+
+  randomHelloGif(): void {
+    const gifs = ['robot-loses-head.gif', 'robot-happy.gif', 'robot-bird.gif', 'robot-brow.gif', 'robot-coin.gif', 'robot-head-one.gif', 'robot-magic.gif', 'robot-fire.gif', 'robot-skate.gif'];
+    const random = Math.floor(Math.random() * gifs.length);
+    this.selectedGif = gifs[random];
   }
 
 }
