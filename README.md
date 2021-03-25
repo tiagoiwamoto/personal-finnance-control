@@ -9,6 +9,19 @@
       Android (em breve)
       Planilhas
 
+### Status do projeto
+Desenvolvimento
+
+=================40%=================
+
+Testes unitários
+
+=================00%=================
+
+Publicação online
+
+=================00%=================
+
 ### Prints
 ![Screen 01](docs/imgs/Screenshot_1.png)
 ![Screen 02](docs/imgs/Screenshot_2.png)
