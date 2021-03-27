@@ -19,6 +19,7 @@ export class InvestmentComponent implements OnInit {
   dividends: DividendsInterface[];
   typeEntry = [{label: 'Compra', value: 'C'}, {label: 'Venda', value: 'V'}];
   typeInvest = [{label: 'Fii', value: 'FII'}, {label: 'Ação', value: 'ACAO'}];
+  tmpFormDateEvent;
   payDarf;
   fiiTotal;
   datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
@@ -42,6 +43,7 @@ export class InvestmentComponent implements OnInit {
     this.investments = [];
     this.dividends = [];
     this.fiiTotal = {};
+
     this.payDarf = {};
   }
 
@@ -60,11 +62,13 @@ export class InvestmentComponent implements OnInit {
   }
 
   openFormNewInvest(): void {
+    this.investment = {};
     this.formEntryRecord = true;
   }
 
   openFormEditInvest(record: any): void {
     this.investment = record;
+    this.tmpFormDateEvent = moment(record.dateEvent).format('DD/MM/YYYY');
     this.formEntryRecord = true;
   }
 
@@ -82,15 +86,36 @@ export class InvestmentComponent implements OnInit {
     this.recordDetails = true;
   }
 
-  saveEntry(): void {
-    // this.entry.id = Math.floor(Math.random() * 9999) + 1 ;
+  async saveEntry(): Promise<void> {
+    this.investment.dateEvent = moment(this.tmpFormDateEvent, 'DD/MM/YYYY').toDate();
     console.log(this.investment);
-    // this.investment.dateEvent = '2021-03-24';
-    // this.entries.push(this.entry);
+    await this.investmentService.createInvestment(this.investment).then(response => {
+      if (response !== null){
+        this.messageService.add({severity: 'info', summary: 'Confirmação', detail: response.message});
+      } else {
+        this.messageService.add({severity: 'warn', summary: 'Aviso', detail: response.message});
+      }
+    }).catch(error => {
+      console.log('error');
+    });
+    this.tmpFormDateEvent = null;
     this.formEntryRecord = false;
   }
 
-  removeEntry(): void {
+  updateEntry(): void {
+    this.investment.dateEvent = moment(this.tmpFormDateEvent, 'DD/MM/YYYY').toDate();
+    this.investmentService.updateInvestment(this.investment).then(response => {
+      if (response !== null){
+        console.log(response);
+      }
+    }).catch(error => {
+      console.log('error');
+    });
+    this.tmpFormDateEvent = null;
+    this.formEntryRecord = false;
+  }
+
+  removeEntry(investment: InvestmentInterface): void {
     this.confirmationService.confirm({
       message: 'Confirma a exclusão?',
       header: 'Confirmar remoção',
@@ -98,12 +123,18 @@ export class InvestmentComponent implements OnInit {
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       accept: () => {
-        this.messageService.add({severity: 'info', summary: 'Confirmado', detail: 'Registro removido'});
+        this.investmentService.deleteInvestment(investment).then(response => {
+          if (response !== null){
+            this.messageService.add({severity: 'info', summary: 'Confirmado', detail: 'Registro removido'});
+          } else {
+            this.messageService.add({severity: 'warn', summary: 'Aviso', detail: 'Falha ao remover registro'});
+          }
+        });
       },
       reject: (type) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+            this.messageService.add({severity: 'error', summary: 'Aviso', detail: 'Ação rejeitada'});
             break;
           case ConfirmEventType.CANCEL:
             this.messageService.add({severity: 'warn', summary: 'Cancelada', detail: 'Ação cancelada'});

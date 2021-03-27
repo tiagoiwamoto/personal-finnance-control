@@ -43,7 +43,7 @@
           <button (click)="openFormEditInvest(investment)" pButton pRipple type="button" icon="pi pi-pencil"
                   class="p-button-rounded p-button-success p-button-outlined p-ml-1 p-mr-1"
                   pTooltip="Editar registro"></button>
-          <button (click)="removeEntry()" pButton pRipple type="button" icon="pi pi-trash"
+          <button (click)="removeEntry(investment)" pButton pRipple type="button" icon="pi pi-trash"
                   class="p-button-rounded p-button-danger p-button-outlined p-ml-1 p-mr-1"
                   pTooltip="Remover registro"></button>
         </td>
@@ -63,7 +63,8 @@
 
 </div>
 
-<p-dialog header="Novo lançamento" [(visible)]="formEntryRecord" [modal]="true" [maximizable]="false" [baseZIndex]="10000"
+<p-dialog header="{{ this.investment.id === undefined ? 'Novo lançamento' : 'Editando lançamento' }}"
+          [(visible)]="formEntryRecord" [modal]="true" [maximizable]="false" [baseZIndex]="10000"
           [draggable]="false" [resizable]="false">
 
   <div class="p-d-flex p-text-center">
@@ -87,8 +88,8 @@
   <br/>
   <mat-form-field class="form-field">
     <mat-label>Data</mat-label>
-    <input [textMask]="{mask: datemask}" autocomplete="off" matInput type="text" [(ngModel)]="investment.dateEvent"/>
-    <button mat-button *ngIf="investment.dateEvent" matSuffix mat-icon-button aria-label="Clear" (click)="investment.dateEvent=null">
+    <input [textMask]="{mask: datemask}" autocomplete="off" matInput type="text" [(ngModel)]="tmpFormDateEvent"/>
+    <button mat-button *ngIf="tmpFormDateEvent" matSuffix mat-icon-button aria-label="Clear" (click)="tmpFormDateEvent=null">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
@@ -126,7 +127,9 @@
     </button>
   </mat-form-field>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" (click)="saveEntry()" label="Salvar"
+    <p-button icon="pi pi-check"
+              (click)="this.investment.id === undefined ? saveEntry() : updateEntry()"
+              [label]="this.investment.id === undefined ? 'Salvar' : 'Atualizar'"
               styleClass="p-button-success p-button-text"></p-button>
     <p-button icon="pi pi-check" (click)="formEntryRecord = false" label="Cancelar"
               styleClass="p-button-warning p-button-text"></p-button>
@@ -221,8 +224,6 @@
   </p-tabView>
 
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" (click)="saveEntry()" label="Editar"
-              styleClass="p-button-info p-button-text"></p-button>
     <p-button icon="pi pi-check" (click)="recordDetails = false" label="Fechar"
               styleClass="p-button-secondary p-button-text"></p-button>
   </ng-template>
