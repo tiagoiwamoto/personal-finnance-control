@@ -12,36 +12,36 @@ export class FinnCoreService {
 
   appMessages: AppMessages[];
   appMessage: AppMessages;
+  appHeaders: HttpHeaders;
 
   constructor(protected http: HttpClient, protected finnStore: FinnStoreService) { }
 
   protected async call(url: string, oldBody: any, body: any, action: HttpActionEnum, customHeaders: Map<string, string>): Promise<any> {
-
     /* Valida se a ação não está nula */
-    if (action === undefined) {
+    if (action === null) {
       throw new Error(this.getMessage(environment.serviceError.noAction, 'finn-core'));
     }
 
     /* Monta o header padrão */
-    const appHeaders = new HttpHeaders()
+    this.appHeaders = new HttpHeaders()
       .append('Content-Type', 'application/json')
       .append('x-token', '');
     if (customHeaders != null){
-      Object.keys(customHeaders).forEach(key => {
-        appHeaders.append(key, customHeaders[key]);
+      customHeaders.forEach((value: string, key: string) => {
+        this.appHeaders = this.appHeaders.append(key, value);
       });
     }
 
     /* Realiza a chamada */
     switch (action){
       case HttpActionEnum.GET:
-        return this.http.get(url, {headers: appHeaders}).toPromise();
+        return this.http.get(url, {headers: this.appHeaders}).toPromise();
       case HttpActionEnum.POST:
-        return this.http.post(url, JSON.stringify(body), {headers: appHeaders}).toPromise();
+        return this.http.post(url, JSON.stringify(body), {headers: this.appHeaders}).toPromise();
       case HttpActionEnum.PUT:
-        return this.http.put(url, JSON.stringify(body), {headers: appHeaders}).toPromise();
+        return this.http.put(url, JSON.stringify(body), {headers: this.appHeaders}).toPromise();
       case HttpActionEnum.DELETE:
-        return this.http.delete(url, {headers: appHeaders}).toPromise();
+        return this.http.delete(url, {headers: this.appHeaders}).toPromise();
     }
   }
 

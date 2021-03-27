@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api';
+import {InvestmentInterface} from './view-models/investment-interface';
+import {InvestmentService} from './investment.service';
+import * as moment from 'moment';
+import {DividendsInterface} from './view-models/dividends-interface';
 
 @Component({
   selector: 'app-investment',
@@ -10,39 +14,18 @@ export class InvestmentComponent implements OnInit {
 
   formEntryRecord = false;
   recordDetails = false;
+  investment: InvestmentInterface;
+  investments: InvestmentInterface[];
+  dividends: DividendsInterface[];
   typeEntry = [{label: 'Compra', value: 'C'}, {label: 'Venda', value: 'V'}];
   typeInvest = [{label: 'Fii', value: 'FII'}, {label: 'Ação', value: 'ACAO'}];
   payDarf;
   fiiTotal;
   datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
-  dividendos = [
-    {
-      year: 2020, payments: [
-        {month: 1, value: 0.52}, {month: 2, value: 0.42}, {month: 3, value: 0.62},
-        {month: 4, value: 0.38}, {month: 5, value: 0.38}, {month: 6, value: 0.62},
-        {month: 7, value: 0.22}, {month: 8, value: 0.66}, {month: 9, value: 0.55},
-        {month: 10, value: 0.78}, {month: 11, value: 0.47}, {month: 12, value: 0.44}
-      ]
-    },
-    {
-      year: 2021, payments: [
-        {month: 1, value: 0.42}, {month: 2, value: 0.62}, {month: 3, value: 0.22}
-      ]
-    }
-  ];
-  entry;
-
-  entries = [
-    {id: 1, name: 'ALZR11', qty: 71, value: 121.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0, dateEvent: '2018-01-01'},
-    {id: 2, name: 'BCFF11', qty: 20, value: 91.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0, dateEvent: '2018-02-01'},
-    {id: 3, name: 'MXRF11', qty: 100, value: 10.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0, dateEvent: '2018-03-01'},
-    {id: 4, name: 'XPML11', qty: 24, value: 88.15, type: 'C', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0.02, dateEvent: '2018-04-01'},
-    {id: 5, name: 'ALZR11', qty: 71, value: 131.15, type: 'V', typeInvest: 'FII', taxB3: 0.58, taxCorretagem: 0, dateEvent: '2021-03-24'},
-  ];
 
   calcTotalDividendos(year: number, qty: number): number{
     let total = 0;
-    this.dividendos.forEach(div => {
+    this.dividends.forEach(div => {
       if (div.year === year){
         div.payments.forEach(pay => {
           total = total + (pay.value * qty);
@@ -52,36 +35,58 @@ export class InvestmentComponent implements OnInit {
     return total;
   }
 
-  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
-    this.entry = {};
+  constructor(private confirmationService: ConfirmationService,
+              private messageService: MessageService,
+              private investmentService: InvestmentService) {
+    this.investment = {};
+    this.investments = [];
+    this.dividends = [];
     this.fiiTotal = {};
     this.payDarf = {};
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.loadInvestments();
+  }
+
+  async loadInvestments(): Promise<void>{
+    this.investmentService.loadInvestments().then(response => {
+      if (response != null){
+        this.investments = response;
+      } else {
+        console.log('error');
+      }
+    });
   }
 
   openFormNewInvest(): void {
     this.formEntryRecord = true;
-    this.entry = {};
   }
 
   openFormEditInvest(record: any): void {
-    this.entry = record;
+    this.investment = record;
     this.formEntryRecord = true;
   }
 
   openRecordDetails(selectedRecord: any): void {
-    this.entry = selectedRecord;
-    this.calculateInvestFii(this.entry);
+    this.investment = selectedRecord;
+    this.investmentService.loadDividends(this.investment.name, moment(this.investment.dateEvent).format('YYYY-MM-DD'))
+      .then(response => {
+        if (response !== null){
+          this.dividends = response;
+        } else {
+          console.log('No data');
+        }
+      });
+    this.calculateInvestFii(this.investment);
     this.recordDetails = true;
   }
 
   saveEntry(): void {
-    this.entry.id = Math.floor(Math.random() * 9999) + 1 ;
-    console.log(this.entry);
-    this.entry.dateEvent = '2021-03-24';
-    this.entries.push(this.entry);
+    // this.entry.id = Math.floor(Math.random() * 9999) + 1 ;
+    console.log(this.investment);
+    // this.investment.dateEvent = '2021-03-24';
+    // this.entries.push(this.entry);
     this.formEntryRecord = false;
   }
 
@@ -108,18 +113,13 @@ export class InvestmentComponent implements OnInit {
     });
   }
 
-  calculateInvestFii(entry: any): void {
+  calculateInvestFii(entry: InvestmentInterface): void {
     this.fiiTotal = {};
     this.payDarf = {};
-    const allInvestmentFromName = this.entries.filter(invest => invest.name === entry.name);
+    const allInvestmentFromName = this.investments.filter(invest => invest.name === entry.name);
     let valueOfAllActionBuy = 0;
     let anySellAction = false;
-    let investSell: {
-      name: any;
-      dateEvent: any;
-      value: any;
-      qty: any;
-    };
+    let investSell: InvestmentInterface = {};
     allInvestmentFromName.forEach(investment => {
       if (investment.type === 'V') {
         anySellAction = true;
