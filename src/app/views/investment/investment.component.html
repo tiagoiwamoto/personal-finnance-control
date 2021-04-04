@@ -26,12 +26,6 @@
         </th>
         <th>Tipo</th>
         <th>Nome</th>
-        <th>Quantidade</th>
-        <th>Valor</th>
-        <th>C/V</th>
-        <th>Taxa B3</th>
-        <th>Taxa Corretagem</th>
-        <th>Total investido</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-investment>
@@ -47,16 +41,10 @@
                   class="p-button-rounded p-button-danger p-button-outlined p-ml-1 p-mr-1"
                   pTooltip="Remover registro"></button>
         </td>
-        <td>{{investment.typeInvest}}</td>
-        <td>{{investment.name}}</td>
-        <td>{{investment.qty}}</td>
-        <td>{{investment.value | currency: 'R$'}}</td>
         <td>
-          <p-badge [value]="getType(investment.type)" [severity]="getSeverity(investment.type)" styleClass="p-mr-2"></p-badge>
+          <p-badge [value]="getType(investment.typeInvest)" [severity]="getSeverity(investment.typeInvest)" styleClass="p-mr-2"></p-badge>
         </td>
-        <td>{{investment.taxB3 | currency: 'R$'}}</td>
-        <td>{{investment.taxCorretagem | currency: 'R$'}}</td>
-        <td>{{(investment.value * investment.qty) - investment.taxB3 - investment.taxCorretagem | currency: 'R$'}}</td>
+        <td>{{investment.name}}</td>
       </tr>
     </ng-template>
   </p-table>
@@ -68,10 +56,10 @@
           [draggable]="false" [resizable]="false">
 
   <div class="p-d-flex p-text-center">
-    <div class="p-col-6"><h5>Tipo de lançamento</h5>
-      <p-selectButton [options]="typeEntry" [(ngModel)]="investment.type" optionLabel="label"
-                      optionValue="value"></p-selectButton></div>
-    <div class="p-col-6"><h5>Tipo de investimento</h5>
+<!--    <div class="p-col-6"><h5>Tipo de lançamento</h5>-->
+<!--      <p-selectButton [options]="typeEntry" [(ngModel)]="investment.type" optionLabel="label"-->
+<!--                      optionValue="value"></p-selectButton></div>-->
+    <div class="p-col-12"><h5>Tipo de investimento</h5>
       <p-selectButton [options]="typeInvest" [(ngModel)]="investment.typeInvest" optionLabel="label"
                       optionValue="value"></p-selectButton></div>
 
@@ -86,46 +74,46 @@
     </button>
   </mat-form-field>
   <br/>
-  <mat-form-field class="form-field">
-    <mat-label>Data</mat-label>
-    <input [textMask]="{mask: datemask}" autocomplete="off" matInput type="text" [(ngModel)]="tmpFormDateEvent"/>
-    <button mat-button *ngIf="tmpFormDateEvent" matSuffix mat-icon-button aria-label="Clear" (click)="tmpFormDateEvent=null">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+<!--  <mat-form-field class="form-field">-->
+<!--    <mat-label>Data</mat-label>-->
+<!--    <input [textMask]="{mask: datemask}" autocomplete="off" matInput type="text" [(ngModel)]="tmpFormDateEvent"/>-->
+<!--    <button mat-button *ngIf="tmpFormDateEvent" matSuffix mat-icon-button aria-label="Clear" (click)="tmpFormDateEvent=null">-->
+<!--      <mat-icon>close</mat-icon>-->
+<!--    </button>-->
+<!--  </mat-form-field>-->
   <br/>
-  <mat-form-field class="form-field">
-    <mat-label>Quantidade</mat-label>
-    <input autocomplete="off" (keypress)="validQtyOnlyNumber($event)" matInput type="text" [(ngModel)]="investment.qty"/>
-    <button mat-button *ngIf="investment.qty" matSuffix mat-icon-button aria-label="Clear" (click)="investment.qty=0">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  <br/>
-  <mat-form-field class="form-field">
-    <mat-label>Valor</mat-label>
-    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="investment.value"/>
-    <button mat-button *ngIf="investment.value" matSuffix mat-icon-button aria-label="Clear" (click)="investment.value=0">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  <br/>
-  <mat-form-field class="form-field">
-    <mat-label>Taxa B3</mat-label>
-    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="investment.taxB3"/>
-    <button mat-button *ngIf="investment.taxB3" matSuffix mat-icon-button aria-label="Clear" (click)="investment.taxB3=0">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  <br/>
-  <mat-form-field class="form-field">
-    <mat-label>Corretagem</mat-label>
-    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="investment.taxCorretagem"/>
-    <button mat-button *ngIf="investment.taxCorretagem" matSuffix mat-icon-button aria-label="Clear"
-            (click)="investment.taxCorretagem=0">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+<!--  <mat-form-field class="form-field">-->
+<!--    <mat-label>Quantidade</mat-label>-->
+<!--    <input autocomplete="off" (keypress)="validQtyOnlyNumber($event)" matInput type="text" [(ngModel)]="investment.qty"/>-->
+<!--    <button mat-button *ngIf="investment.qty" matSuffix mat-icon-button aria-label="Clear" (click)="investment.qty=0">-->
+<!--      <mat-icon>close</mat-icon>-->
+<!--    </button>-->
+<!--  </mat-form-field>-->
+<!--  <br/>-->
+<!--  <mat-form-field class="form-field">-->
+<!--    <mat-label>Valor</mat-label>-->
+<!--    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="investment.value"/>-->
+<!--    <button mat-button *ngIf="investment.value" matSuffix mat-icon-button aria-label="Clear" (click)="investment.value=0">-->
+<!--      <mat-icon>close</mat-icon>-->
+<!--    </button>-->
+<!--  </mat-form-field>-->
+<!--  <br/>-->
+<!--  <mat-form-field class="form-field">-->
+<!--    <mat-label>Taxa B3</mat-label>-->
+<!--    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="investment.taxB3"/>-->
+<!--    <button mat-button *ngIf="investment.taxB3" matSuffix mat-icon-button aria-label="Clear" (click)="investment.taxB3=0">-->
+<!--      <mat-icon>close</mat-icon>-->
+<!--    </button>-->
+<!--  </mat-form-field>-->
+<!--  <br/>-->
+<!--  <mat-form-field class="form-field">-->
+<!--    <mat-label>Corretagem</mat-label>-->
+<!--    <input autocomplete="off" (keypress)="validValue($event)" matInput type="text" [(ngModel)]="investment.taxCorretagem"/>-->
+<!--    <button mat-button *ngIf="investment.taxCorretagem" matSuffix mat-icon-button aria-label="Clear"-->
+<!--            (click)="investment.taxCorretagem=0">-->
+<!--      <mat-icon>close</mat-icon>-->
+<!--    </button>-->
+<!--  </mat-form-field>-->
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-check"
               (click)="this.investment.id === undefined ? saveEntry() : updateEntry()"
@@ -146,81 +134,81 @@
           <span class="p-ml-2 p-mr-2 p-mt-2">Detalhes sobre {{ investment.name }}</span>
         </ng-template>
         Valor pago:
-        <p-badge [value]="investment.value | currency: 'R$'" styleClass="p-mr-2"></p-badge>
+<!--        <p-badge [value]="investment.value | currency: 'R$'" styleClass="p-mr-2"></p-badge>-->
         <div class="p-mt-2"></div>
         Quantidade
-        <p-badge [value]="investment.qty" styleClass="p-mr-2"></p-badge>
+<!--        <p-badge [value]="investment.qty" styleClass="p-mr-2"></p-badge>-->
         <div class="p-mt-2"></div>
         Total investido:
-        <p-badge [value]="investment.value * investment.qty | currency: 'R$'" styleClass="p-mr-2"></p-badge>
+<!--        <p-badge [value]="investment.value * investment.qty | currency: 'R$'" styleClass="p-mr-2"></p-badge>-->
         <div class="p-mt-2"></div>
         <ng-template pTemplate="footer">
           Footer content here
         </ng-template>
       </p-card>
     </p-tabPanel>
-    <p-tabPanel header="Dividendos">
-      <p-tabView>
-        <p-tabPanel [header]="year.year" *ngFor="let year of dividends">
-          <div [style]="{maxWidth: '400px'}">
-            <mat-chip-list aria-label="Fish selection">
-            <mat-chip color="primary" selected>Total recebido: {{ calcTotalDividendos(year.year, investment.qty) | currency: 'R$' }}</mat-chip>
-            </mat-chip-list>
-            <p-divider></p-divider>
-            <p-table [value]="year.payments" rowHover="true">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Mês</th>
-                  <th>Valor</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-payment>
-                <tr>
-                  <td>{{ convertMonthNumberToText(payment.month) }}</td>
-                  <td>{{ payment.value * investment.qty | currency: 'R$' }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-        </p-tabPanel>
-      </p-tabView>
-    </p-tabPanel>
-    <p-tabPanel header="Ganhos">
-      <div *ngIf="investment.typeInvest === 'FII'">
-        <p-messages severity="success">
-          <ng-template pTemplate>
-            Total investido: <div class="p-ml-2">{{ fiiTotal.totalInvestment | currency: 'R$' }}</div>
-          </ng-template>
-        </p-messages>
-        <p-divider></p-divider>
-        <div *ngIf="payDarf.dateSell !== undefined">
+<!--    <p-tabPanel header="Dividendos">-->
+<!--      <p-tabView>-->
+<!--        <p-tabPanel [header]="year.year" *ngFor="let year of dividends">-->
+<!--          <div [style]="{maxWidth: '400px'}">-->
+<!--            <mat-chip-list aria-label="Fish selection">-->
+<!--            <mat-chip color="primary" selected>Total recebido: {{ calcTotalDividendos(year.year, investment.qty) | currency: 'R$' }}</mat-chip>-->
+<!--            </mat-chip-list>-->
+<!--            <p-divider></p-divider>-->
+<!--            <p-table [value]="year.payments" rowHover="true">-->
+<!--              <ng-template pTemplate="header">-->
+<!--                <tr>-->
+<!--                  <th>Mês</th>-->
+<!--                  <th>Valor</th>-->
+<!--                </tr>-->
+<!--              </ng-template>-->
+<!--              <ng-template pTemplate="body" let-payment>-->
+<!--                <tr>-->
+<!--                  <td>{{ convertMonthNumberToText(payment.month) }}</td>-->
+<!--                  <td>{{ payment.value * investment.qty | currency: 'R$' }}</td>-->
+<!--                </tr>-->
+<!--              </ng-template>-->
+<!--            </p-table>-->
+<!--          </div>-->
+<!--        </p-tabPanel>-->
+<!--      </p-tabView>-->
+<!--    </p-tabPanel>-->
+<!--    <p-tabPanel header="Ganhos">-->
+<!--      <div *ngIf="investment.typeInvest === 'FII'">-->
+<!--        <p-messages severity="success">-->
+<!--          <ng-template pTemplate>-->
+<!--            Total investido: <div class="p-ml-2">{{ fiiTotal.totalInvestment | currency: 'R$' }}</div>-->
+<!--          </ng-template>-->
+<!--        </p-messages>-->
+<!--        <p-divider></p-divider>-->
+<!--        <div *ngIf="payDarf.dateSell !== undefined">-->
 
-          <p-messages severity="info">
-            <ng-template pTemplate>
-              Data da venda: <div class="p-ml-2">{{ payDarf.dateSell | date: 'dd/MM/yyyy' }}</div>
-            </ng-template>
-          </p-messages>
+<!--          <p-messages severity="info">-->
+<!--            <ng-template pTemplate>-->
+<!--              Data da venda: <div class="p-ml-2">{{ payDarf.dateSell | date: 'dd/MM/yyyy' }}</div>-->
+<!--            </ng-template>-->
+<!--          </p-messages>-->
 
-          <p-messages severity="info">
-            <ng-template pTemplate>
-              Valor da venda: <div class="p-ml-2">{{ payDarf.valueSell | currency: 'R$' }}</div>
-            </ng-template>
-          </p-messages>
+<!--          <p-messages severity="info">-->
+<!--            <ng-template pTemplate>-->
+<!--              Valor da venda: <div class="p-ml-2">{{ payDarf.valueSell | currency: 'R$' }}</div>-->
+<!--            </ng-template>-->
+<!--          </p-messages>-->
 
-          <p-messages severity="success">
-            <ng-template pTemplate>
-              Valor ganho: <div class="p-ml-2">{{ payDarf.valueWow | currency: 'R$' }}</div>
-            </ng-template>
-          </p-messages>
+<!--          <p-messages severity="success">-->
+<!--            <ng-template pTemplate>-->
+<!--              Valor ganho: <div class="p-ml-2">{{ payDarf.valueWow | currency: 'R$' }}</div>-->
+<!--            </ng-template>-->
+<!--          </p-messages>-->
 
-          <p-messages severity="warn">
-            <ng-template pTemplate>
-              Valor aproximado da DARF: <div class="p-ml-2">{{ payDarf.valueOfDarf | currency: 'R$' }}</div>
-            </ng-template>
-          </p-messages>
-        </div>
-      </div>
-    </p-tabPanel>
+<!--          <p-messages severity="warn">-->
+<!--            <ng-template pTemplate>-->
+<!--              Valor aproximado da DARF: <div class="p-ml-2">{{ payDarf.valueOfDarf | currency: 'R$' }}</div>-->
+<!--            </ng-template>-->
+<!--          </p-messages>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </p-tabPanel>-->
   </p-tabView>
 
   <ng-template pTemplate="footer">

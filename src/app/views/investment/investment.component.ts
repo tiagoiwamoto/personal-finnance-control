@@ -82,7 +82,7 @@ export class InvestmentComponent implements OnInit {
           console.log('No data');
         }
       });
-    this.calculateInvestFii(this.investment);
+    // this.calculateInvestFii(this.investment);
     this.recordDetails = true;
   }
 
@@ -144,37 +144,37 @@ export class InvestmentComponent implements OnInit {
     });
   }
 
-  calculateInvestFii(entry: InvestmentInterface): void {
-    this.fiiTotal = {};
-    this.payDarf = {};
-    const allInvestmentFromName = this.investments.filter(invest => invest.name === entry.name);
-    let valueOfAllActionBuy = 0;
-    let anySellAction = false;
-    let investSell: InvestmentInterface = {};
-    allInvestmentFromName.forEach(investment => {
-      if (investment.type === 'V') {
-        anySellAction = true;
-        investSell = investment;
-      }
-      if (investment.type === 'C') {
-        valueOfAllActionBuy += (investment.value * investment.qty);
-      }
-    });
-    if (anySellAction){
-      const payDarf = {
-        name: investSell.name, dateSell: investSell.dateEvent,
-        valueSell: investSell.value, valueWow: (investSell.value * entry.qty) - valueOfAllActionBuy,
-        valueOfDarf: (((investSell.value * investSell.qty) - valueOfAllActionBuy) * 20) / 100
-      };
-      this.payDarf = {};
-      this.payDarf = payDarf;
-    }
-    this.fiiTotal = {};
-    this.fiiTotal = {
-      name: entry.name, totalInvestment: valueOfAllActionBuy
-    };
-
-  }
+  // calculateInvestFii(entry: InvestmentInterface): void {
+  //   this.fiiTotal = {};
+  //   this.payDarf = {};
+  //   const allInvestmentFromName = this.investments.filter(invest => invest.name === entry.name);
+  //   let valueOfAllActionBuy = 0;
+  //   let anySellAction = false;
+  //   let investSell: InvestmentInterface = {};
+  //   allInvestmentFromName.forEach(investment => {
+  //     if (investment.type === 'V') {
+  //       anySellAction = true;
+  //       investSell = investment;
+  //     }
+  //     if (investment.type === 'C') {
+  //       valueOfAllActionBuy += (investment.value * investment.qty);
+  //     }
+  //   });
+  //   if (anySellAction){
+  //     const payDarf = {
+  //       name: investSell.name, dateSell: investSell.dateEvent,
+  //       valueSell: investSell.value, valueWow: (investSell.value * entry.qty) - valueOfAllActionBuy,
+  //       valueOfDarf: (((investSell.value * investSell.qty) - valueOfAllActionBuy) * 20) / 100
+  //     };
+  //     this.payDarf = {};
+  //     this.payDarf = payDarf;
+  //   }
+  //   this.fiiTotal = {};
+  //   this.fiiTotal = {
+  //     name: entry.name, totalInvestment: valueOfAllActionBuy
+  //   };
+  //
+  // }
 
   validQtyOnlyNumber(event): boolean{
     const charCode = (event.which) ? event.which : event.keyCode;
@@ -193,15 +193,15 @@ export class InvestmentComponent implements OnInit {
   }
 
   getType(type: string): string{
-    if (type === 'C'){
-      return 'Compra';
+    if (type === 'FII'){
+      return 'Fii';
     }else{
-      return 'Venda';
+      return 'Ação';
     }
   }
 
   getSeverity(type: string): string{
-    if (type === 'C'){
+    if (type === 'FII'){
       return 'info';
     }else{
       return 'danger';
